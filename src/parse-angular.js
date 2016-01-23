@@ -63,7 +63,7 @@
 					/// Patching prototypes
 					currentProtoMethods.forEach(function(method){
 
-						var origMethod = Prase[currentClass] && Parse[currentClass].prototype[method];
+						var origMethod = Parse[currentClass] && Parse[currentClass].prototype[method];
 
 						if (origMethod) {
 
