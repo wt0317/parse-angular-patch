@@ -63,24 +63,28 @@
 					/// Patching prototypes
 					currentProtoMethods.forEach(function(method){
 
-						var origMethod = Parse[currentClass].prototype[method];
+						var origMethod = Prase[currentClass] && Parse[currentClass].prototype[method];
 
-						// Overwrite original function by wrapping it with $q
-						Parse[currentClass].prototype[method] = function() {
+						if (origMethod) {
 
-							return origMethod.apply(this, arguments)
-							.then(function(data){
-								var defer = $q.defer();
-								defer.resolve(data);
-								return defer.promise;
-							}, function(err){
-								var defer = $q.defer();
-								defer.reject(err);
-								return defer.promise;
-							});
+							// Overwrite original function by wrapping it with $q
+							Parse[currentClass].prototype[method] = function() {
+
+								return origMethod.apply(this, arguments)
+								.then(function(data){
+									var defer = $q.defer();
+									defer.resolve(data);
+									return defer.promise;
+								}, function(err){
+									var defer = $q.defer();
+									defer.reject(err);
+									return defer.promise;
+								});
 
 
-						};
+							};
+
+						}
 
 					});
 
